@@ -33,7 +33,46 @@ Example Responses:
 Add the required logic below to complete the API.
 */
 
+
+// Function to get the current day of the week
+function getDayMessage() {
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const today = new Date();
+  const dayIndex = today.getDay();
+  const dayName = days[dayIndex];
+
+  // Day-specific messages
+  if (dayName === 'Monday') {
+    return "Happy Monday! Start your week with energy!";
+  } else if (dayName === 'Friday') {
+    return "It's Friday! The weekend is near!";
+  } else {
+    return "Have a wonderful day!";
+  }
+}
+
+// API Endpoint to greet the user and show a day-specific message
+app.get('/assistant/greet', (req, res) => {
+  const name = req.query.name; // Read the 'name' query parameter
+
+  if (!name) {
+    return res.status(400).send('Please provide a name.');
+  }
+
+  // Personalized welcome message
+  const greetingMessage = `Hello, ${name}! Welcome to our assistant app!`;
+  const dayMessage = getDayMessage(); // Get the day-specific message
+
+  // Return the response as JSON
+  return res.json({
+    welcomeMessage: greetingMessage,
+    dayMessage: dayMessage
+  });
+});
+
+// Start the server
 const PORT = 3000;
 app.listen(PORT, () => {
-    console.log(`Virtual Assistant API is running on http://localhost:${PORT}`);
+  console.log(`Virtual Assistant API is running on http://localhost:${PORT}`);
 });
+
